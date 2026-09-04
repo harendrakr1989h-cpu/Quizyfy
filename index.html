@@ -1,3 +1,4 @@
+cat << 'EOF' > index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,6 +48,13 @@
             width: 100%;
         }
         button:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .btn-secondary {
+            background-color: #6b7280;
+            margin-top: 10px;
+        }
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
         .btn-option {
             background-color: #f9fafb;
             color: var(--text);
@@ -92,7 +100,8 @@
         <p class="subtitle">Your score:</p>
         <div id="score-text" class="score-box">0 / 5</div>
         <p id="score-feedback" class="subtitle" style="font-weight: 600; color: var(--text);"></p>
-        <button onclick="goHome()" style="margin-top: 15px;">Play Again (New Questions) 🔄</button>
+        <button onclick="restartCurrentCategory()" style="margin-top: 15px;">Play Again (5 New Questions) 🔄</button>
+        <button onclick="goHome()" class="btn-secondary">Choose Another Category 🏠</button>
     </div>
 </div>
 
@@ -136,6 +145,7 @@
         ]
     };
 
+    let activeCategoryKey = 'fun';
     let activeQuestions = [];
     let currentIndex = 0;
     let score = 0;
@@ -151,7 +161,7 @@
     }
 
     function startQuiz(categoryKey) {
-        // Randomly shuffle all questions in category and select the first 5
+        activeCategoryKey = categoryKey;
         const fullBank = questionBank[categoryKey];
         const shuffled = shuffleArray(fullBank);
         activeQuestions = shuffled.slice(0, QUESTIONS_PER_ROUND);
@@ -163,6 +173,10 @@
         document.getElementById('result-screen').classList.add('hidden');
         document.getElementById('quiz-screen').classList.remove('hidden');
         loadQuestion();
+    }
+
+    function restartCurrentCategory() {
+        startQuiz(activeCategoryKey);
     }
 
     function loadQuestion() {
@@ -235,3 +249,5 @@
 </script>
 </body>
 </html>
+EOF
+    
