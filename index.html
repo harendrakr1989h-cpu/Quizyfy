@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Super Star Kids Quiz 🌟</title>
+    <style>
+        :root {
+            --bg-color: #fef08a;
+            --primary: #f59e0b;
+            --accent-pink: #ec4899;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef08a 0%, #fed7aa 50%, #fbcfe8 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Top Bar */
+        header {
+            width: 100%;
+            background-color: #ffffff;
+            border-bottom: 5px solid var(--primary);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent-pink);
+        }
+
+        .nav-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #1d4ed8;
+            transition: 0.1s;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Content Container */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .page {
+            background: var(--card-bg);
+            width: 100%;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 4px solid var(--primary);
+            display: none;
+            text-align: center;
+            animation: bounceIn 0.3s ease-out;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            80% { transform: scale(1.03); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            color: var(--accent-pink);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        /* Category Buttons */
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .cat-card {
+            background: #fff;
+            border: 4px solid;
+            border-radius: 18px;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            transition: 0.1s;
+        }
+
+        .cat-card:active {
+            transform: translateY(6px);
+            box-shadow: none;
+        }
+
+        .cat-animals { border-color: var(--accent-green); color: var(--accent-green); }
+        .cat-space { border-color: var(--accent-purple); color: var(--accent-purple); }
+        .cat-math { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .cat-dino { border-color: var(--primary); color: var(--primary); }
+
+        /* Quiz Card */
+        .question-badge {
+            display: inline-block;
+            background: var(--accent-purple);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #f8fafc;
+            border: 3px solid #cbd5e1;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
+
+        .option-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--accent-green) !important;
+            color: #166534;
+        }
+
+        .option-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b;
+        }
+
+        .next-btn {
+            margin-top: 20px;
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #059669;
+            display: none;
+        }
+
+        .next-btn:active {
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+
+        /* Score Stars */
+        .star-box {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">🌟 Kids Trivia</div>
+        <button class="nav-btn" onclick="goToPage('home')">🏠 Home</button>
+    </header>
+
+    <main>
+        <!-- PAGE 1: CATEGORY SELECTION -->
+        <div id="page-home" class="page active-page">
+            <h1>Choose an Adventure!</h1>
+            <p>Pick a topic to start winning stars ⭐</p>
+            <div class="category-grid">
+                <button class="cat-card cat-animals" onclick="startQuiz('animals')">🦁<br>Animals</button>
+                <button class="cat-card cat-space" onclick="startQuiz('space')">🚀<br>Space</button>
+                <button class="cat-card cat-math" onclick="startQuiz('math')">🔢<br>Fun Math</button>
+                <button class="cat-card cat-dino" onclick="startQuiz('dinosaurs')">🦖<br>Dinosaurs</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: QUIZ SCREEN -->
+        <div id="page-quiz" class="page">
+            <span class="question-badge" id="quiz-tracker">Question 1/3</span>
+            <div class="question-text" id="quiz-question">Loading...</div>
+            <div class="options-list" id="quiz-options"></div>
+            <button id="next-button" class="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
+        </div>
+
+        <!-- PAGE 3: REWARD / SCORE SCREEN -->
+        <div id="page-results" class="page">
+            <div class="star-box" id="star-display">⭐⭐⭐</div>
+            <h1 id="result-title">Awesome Job!</h1>
+            <p id="result-desc">You answered all questions!</p>
+            <button class="cat-card cat-animals" style="width: 100%;" onclick="goToPage('home')">Play Again 🔁</button>
+        </div>
+    </main>
+
+    <script>
+        // Web Audio Synthesizer for Fun Sound Effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.2);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+            }
+        }
+
+        // Child-Friendly Quiz Bank
+        const quizBank = {
+            animals: [
+                { q: "Which animal is known as the King of the Jungle?", opts: ["Elephant", "Lion", "Giraffe", "Tiger"], ans: 1 },
+                { q: "What do pandas love to eat most?", opts: ["Pizza", "Bamboo", "Fish", "Apples"], ans: 1 },
+                { q: "Which bird can swim but cannot fly?", opts: ["Penguin", "Eagle", "Parrot", "Sparrow"], ans: 0 }
+            ],
+            space: [
+                { q: "What is the name of the closest star to Earth?", opts: ["The Moon", "Mars", "The Sun", "Jupiter"], ans: 2 },
+                { q: "Which planet has beautiful big rings around it?", opts: ["Saturn", "Venus", "Mercury", "Earth"], ans: 0 },
+                { q: "What color is Mars usually called?", opts: ["The Blue Planet", "The Red Planet", "The Green Planet", "The Golden Planet"], ans: 1 }
+            ],
+            math: [
+                { q: "What is 5 + 3?", opts: ["7", "8", "9", "10"], ans: 1 },
+                { q: "How many sides does a triangle have?", opts: ["3", "4", "5", "6"], ans: 0 },
+                { q: "If you have 4 apples and eat 2, how many are left?", opts: ["1", "2", "3", "4"], ans: 1 }
+            ],
+            dinosaurs: [
+                { q: "Which dinosaur had very tiny arms and huge sharp teeth?", opts: ["Stegosaurus", "T-Rex", "Brachiosaurus", "Triceratops"], ans: 1 },
+                { q: "Which dinosaur had 3 horns on its face?", opts: ["Triceratops", "Velociraptor", "Diplodocus", "Pterodactyl"], ans: 0 },
+                { q: "Did dinosaurs lay eggs?", opts: ["Yes! 🥚", "No", "Only some birds did", "Never"], ans: 0 }
+            ]
+        };
+
+        let currentCategory = "";
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let stars = 0;
+
+        function goToPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
+            document.getElementById(`page-${pageId}`).classList.add('active-page');
+        }
+
+        function startQuiz(category) {
+            currentCategory = category;
+            currentQuestions = quizBank[category];
+            currentIndex = 0;
+            stars = 0;
+            goToPage('quiz');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = currentQuestions[currentIndex];
+            document.getElementById('quiz-tracker').innerText = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+            document.getElementById('quiz-question').innerText = q.q;
+            document.getElementById('next-button').style.display = 'none';
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            q.opts.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(btn, idx, q.ans);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(btn, chosen, correct) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (chosen === correct) {
+                btn.classList.add('correct');
+                playSound('correct');
+                stars++;
+            } else {
+                btn.classList.add('wrong');
+                allBtns[correct].classList.add('correct');
+                playSound('wrong');
+            }
+
+            document.getElementById('next-button').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            goToPage('results');
+            const starDisplay = document.getElementById('star-display');
+            const title = document.getElementById('result-title');
+            const desc = document.getElementById('result-desc');
+
+            if (stars === 3) {
+                starDisplay.innerText = "⭐⭐⭐";
+                title.innerText = "🎉 Super Star!";
+                desc.innerText = "You got 3 out of 3 correct!";
+            } else if (stars === 2) {
+                starDisplay.innerText = "⭐⭐";
+                title.innerText = "👏 Great Effort!";
+                desc.innerText = `You scored ${stars} out of 3 stars!`;
+            } else {
+                starDisplay.innerText = "⭐";
+                title.innerText = "🌱 Keep Practicing!";
+                desc.innerText = `You earned ${stars} star! Try again to get all 3!`;
+            }
+        }
+    </script>
+</body>
+</html>
+
