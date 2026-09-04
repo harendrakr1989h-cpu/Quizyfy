@@ -3,399 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 Super Star Kids Quiz 🌟</title>
+    <title>Quizyfy - Kids Interactive Quiz</title>
     <style>
         :root {
-            --bg-color: #fef08a;
-            --primary: #f59e0b;
-            --accent-pink: #ec4899;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-purple: #8b5cf6;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #10b981;
+            --danger: #ef4444;
             --card-bg: #ffffff;
-            --text-color: #1e293b;
+            --text: #1f2937;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body {
-            background: linear-gradient(135deg, #fef08a 0%, #fed7aa 50%, #fbcfe8 100%);
-            color: var(--text-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Top Bar */
-        header {
-            width: 100%;
-            background-color: #ffffff;
-            border-bottom: 5px solid var(--primary);
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--accent-pink);
-        }
-
-        .nav-btn {
-            background: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #1d4ed8;
-            transition: 0.1s;
-        }
-
-        .nav-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-
-        /* Content Container */
-        main {
-            flex: 1;
-            width: 100%;
-            max-width: 600px;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-
-        .page {
-            background: var(--card-bg);
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             width: 100%;
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 4px solid var(--primary);
-            display: none;
+            max-width: 600px;
+            padding: 30px;
             text-align: center;
-            animation: bounceIn 0.3s ease-out;
         }
-
-        .active-page {
-            display: block;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            80% { transform: scale(1.03); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        h1 {
-            color: var(--accent-pink);
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            color: #475569;
-        }
-
-        /* Category Buttons */
-        .category-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .cat-card {
-            background: #fff;
-            border: 4px solid;
-            border-radius: 18px;
-            padding: 16px;
-            font-size: 1.2rem;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
-            transition: 0.1s;
-        }
-
-        .cat-card:active {
-            transform: translateY(6px);
-            box-shadow: none;
-        }
-
-        .cat-animals { border-color: var(--accent-green); color: var(--accent-green); }
-        .cat-space { border-color: var(--accent-purple); color: var(--accent-purple); }
-        .cat-math { border-color: var(--accent-pink); color: var(--accent-pink); }
-        .cat-dino { border-color: var(--primary); color: var(--primary); }
-
-        /* Quiz Card */
-        .question-badge {
-            display: inline-block;
-            background: var(--accent-purple);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 12px;
-        }
-
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #1e293b;
-            margin-bottom: 20px;
-        }
-
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option-btn {
-            background: #f8fafc;
-            border: 3px solid #cbd5e1;
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 1.15rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.1s;
-        }
-
-        .option-btn:hover:not(:disabled) {
-            background: #e2e8f0;
-            border-color: #94a3b8;
-        }
-
-        .option-btn.correct {
-            background: #dcfce7 !important;
-            border-color: var(--accent-green) !important;
-            color: #166534;
-        }
-
-        .option-btn.wrong {
-            background: #fee2e2 !important;
-            border-color: #ef4444 !important;
-            color: #991b1b;
-        }
-
-        .next-btn {
-            margin-top: 20px;
-            background: var(--accent-green);
+        h1 { color: var(--text); margin-bottom: 8px; font-size: 1.8rem; }
+        p.subtitle { color: #6b7280; margin-bottom: 24px; font-size: 1rem; }
+        .category-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+        button {
+            background-color: var(--primary);
             color: white;
             border: none;
-            width: 100%;
-            padding: 14px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 14px;
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 5px 0 #059669;
-            display: none;
+            transition: all 0.2s ease;
+            width: 100%;
         }
-
-        .next-btn:active {
-            transform: translateY(5px);
-            box-shadow: none;
+        button:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .btn-option {
+            background-color: #f9fafb;
+            color: var(--text);
+            border: 2px solid #e5e7eb;
+            margin-bottom: 10px;
+            text-align: left;
         }
-
-        /* Score Stars */
-        .star-box {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
+        .btn-option:hover { background-color: #eef2ff; border-color: var(--primary); color: var(--primary); }
+        .btn-option.correct { background-color: #d1fae5 !important; border-color: var(--success) !important; color: #065f46 !important; }
+        .btn-option.wrong { background-color: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b !important; }
+        .hidden { display: none; }
+        .progress-bar { height: 8px; background-color: #e5e7eb; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background-color: var(--primary); width: 0%; transition: width 0.3s ease; }
+        .question-text { font-size: 1.25rem; color: var(--text); margin-bottom: 20px; font-weight: 600; }
+        .score-box { font-size: 2.5rem; font-weight: bold; color: var(--primary); margin: 15px 0; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">🌟 Kids Trivia</div>
-        <button class="nav-btn" onclick="goToPage('home')">🏠 Home</button>
-    </header>
-
-    <main>
-        <!-- PAGE 1: CATEGORY SELECTION -->
-        <div id="page-home" class="page active-page">
-            <h1>Choose an Adventure!</h1>
-            <p>Pick a topic to start winning stars ⭐</p>
-            <div class="category-grid">
-                <button class="cat-card cat-animals" onclick="startQuiz('animals')">🦁<br>Animals</button>
-                <button class="cat-card cat-space" onclick="startQuiz('space')">🚀<br>Space</button>
-                <button class="cat-card cat-math" onclick="startQuiz('math')">🔢<br>Fun Math</button>
-                <button class="cat-card cat-dino" onclick="startQuiz('dinosaurs')">🦖<br>Dinosaurs</button>
-            </div>
+<div class="container">
+    <div id="home-screen">
+        <h1>🌟 Welcome to Quizyfy! 🌟</h1>
+        <p class="subtitle">Choose a category to start playing:</p>
+        <div class="category-grid">
+            <button onclick="startQuiz('fun')">🎈 General Kids Fun</button>
+            <button onclick="startQuiz('science')">🔬 Science & Animals</button>
+            <button onclick="startQuiz('space')">🚀 Space Explorer</button>
         </div>
+    </div>
 
-        <!-- PAGE 2: QUIZ SCREEN -->
-        <div id="page-quiz" class="page">
-            <span class="question-badge" id="quiz-tracker">Question 1/3</span>
-            <div class="question-text" id="quiz-question">Loading...</div>
-            <div class="options-list" id="quiz-options"></div>
-            <button id="next-button" class="next-btn" onclick="nextQuestion()">Next Question ➡️</button>
+    <div id="quiz-screen" class="hidden">
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
         </div>
+        <p id="question-count" class="subtitle" style="margin-bottom: 10px; font-weight: 600;">Question 1/5</p>
+        <div id="question-text" class="question-text">Loading...</div>
+        <div id="options-container"></div>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()" style="margin-top: 15px;">Next Question ➔</button>
+    </div>
 
-        <!-- PAGE 3: REWARD / SCORE SCREEN -->
-        <div id="page-results" class="page">
-            <div class="star-box" id="star-display">⭐⭐⭐</div>
-            <h1 id="result-title">Awesome Job!</h1>
-            <p id="result-desc">You answered all questions!</p>
-            <button class="cat-card cat-animals" style="width: 100%;" onclick="goToPage('home')">Play Again 🔁</button>
-        </div>
-    </main>
+    <div id="result-screen" class="hidden">
+        <h1>🎉 Quiz Completed!</h1>
+        <p class="subtitle">Your score:</p>
+        <div id="score-text" class="score-box">0 / 5</div>
+        <p id="score-feedback" class="subtitle" style="font-weight: 600; color: var(--text);"></p>
+        <button onclick="goHome()" style="margin-top: 15px;">Play Again 🔄</button>
+    </div>
+</div>
 
-    <script>
-        // Web Audio Synthesizer for Fun Sound Effects
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+<script>
+    const quizData = {
+        fun: [
+            { q: "How many days are there in a standard year?", options: ["350", "365", "370", "400"], ans: 1 },
+            { q: "What color do you get if you mix Blue and Yellow?", options: ["Red", "Orange", "Green", "Purple"], ans: 2 },
+            { q: "Which animal is known as the King of the Jungle?", options: ["Tiger", "Elephant", "Lion", "Giraffe"], ans: 2 },
+            { q: "How many letters are in the English alphabet?", options: ["24", "26", "28", "30"], ans: 1 },
+            { q: "Which fruit is known to keep the doctor away if eaten daily?", options: ["Banana", "Orange", "Apple", "Mango"], ans: 2 }
+        ],
+        science: [
+            { q: "What is the largest land animal in the world?", options: ["Blue Whale", "African Elephant", "Giraffe", "Hippopotamus"], ans: 1 },
+            { q: "What gas do plants absorb from the air?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], ans: 1 },
+            { q: "How many legs does a spider have?", options: ["6", "8", "10", "12"], ans: 1 },
+            { q: "What is the hardest natural substance on Earth?", options: ["Gold", "Iron", "Diamond", "Stone"], ans: 2 },
+            { q: "Which part of the plant is underground and drinks water?", options: ["Leaves", "Roots", "Stem", "Flower"], ans: 1 }
+        ],
+        space: [
+            { q: "Which planet is closest to the Sun?", options: ["Venus", "Mars", "Mercury", "Earth"], ans: 2 },
+            { q: "Which planet is famously called the Red Planet?", options: ["Jupiter", "Mars", "Saturn", "Mercury"], ans: 1 },
+            { q: "What is the name of Earth's natural satellite?", options: ["Europa", "The Moon", "Titan", "Phobos"], ans: 1 },
+            { q: "Which is the largest planet in our solar system?", options: ["Saturn", "Jupiter", "Neptune", "Uranus"], ans: 1 },
+            { q: "What gives light and heat to our entire solar system?", options: ["The Moon", "The Sun", "Polaris", "Mars"], ans: 1 }
+        ]
+    };
 
-        function playSound(type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
+    let currentCategory = [];
+    let currentIndex = 0;
+    let score = 0;
 
-            if (type === 'correct') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.2);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(250, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.25);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.25);
-            }
-        }
+    function startQuiz(categoryKey) {
+        currentCategory = quizData[categoryKey];
+        currentIndex = 0;
+        score = 0;
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        loadQuestion();
+    }
 
-        // Child-Friendly Quiz Bank
-        const quizBank = {
-            animals: [
-                { q: "Which animal is known as the King of the Jungle?", opts: ["Elephant", "Lion", "Giraffe", "Tiger"], ans: 1 },
-                { q: "What do pandas love to eat most?", opts: ["Pizza", "Bamboo", "Fish", "Apples"], ans: 1 },
-                { q: "Which bird can swim but cannot fly?", opts: ["Penguin", "Eagle", "Parrot", "Sparrow"], ans: 0 }
-            ],
-            space: [
-                { q: "What is the name of the closest star to Earth?", opts: ["The Moon", "Mars", "The Sun", "Jupiter"], ans: 2 },
-                { q: "Which planet has beautiful big rings around it?", opts: ["Saturn", "Venus", "Mercury", "Earth"], ans: 0 },
-                { q: "What color is Mars usually called?", opts: ["The Blue Planet", "The Red Planet", "The Green Planet", "The Golden Planet"], ans: 1 }
-            ],
-            math: [
-                { q: "What is 5 + 3?", opts: ["7", "8", "9", "10"], ans: 1 },
-                { q: "How many sides does a triangle have?", opts: ["3", "4", "5", "6"], ans: 0 },
-                { q: "If you have 4 apples and eat 2, how many are left?", opts: ["1", "2", "3", "4"], ans: 1 }
-            ],
-            dinosaurs: [
-                { q: "Which dinosaur had very tiny arms and huge sharp teeth?", opts: ["Stegosaurus", "T-Rex", "Brachiosaurus", "Triceratops"], ans: 1 },
-                { q: "Which dinosaur had 3 horns on its face?", opts: ["Triceratops", "Velociraptor", "Diplodocus", "Pterodactyl"], ans: 0 },
-                { q: "Did dinosaurs lay eggs?", opts: ["Yes! 🥚", "No", "Only some birds did", "Never"], ans: 0 }
-            ]
-        };
+    function loadQuestion() {
+        const qData = currentCategory[currentIndex];
+        document.getElementById('question-count').innerText = `Question ${currentIndex + 1} of ${currentCategory.length}`;
+        document.getElementById('question-text').innerText = qData.q;
+        document.getElementById('progress-fill').style.width = `${((currentIndex) / currentCategory.length) * 100}%`;
+        document.getElementById('next-btn').classList.add('hidden');
 
-        let currentCategory = "";
-        let currentQuestions = [];
-        let currentIndex = 0;
-        let stars = 0;
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
 
-        function goToPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
-            document.getElementById(`page-${pageId}`).classList.add('active-page');
-        }
+        qData.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-option';
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(idx);
+            container.appendChild(btn);
+        });
+    }
 
-        function startQuiz(category) {
-            currentCategory = category;
-            currentQuestions = quizBank[category];
-            currentIndex = 0;
-            stars = 0;
-            goToPage('quiz');
-            loadQuestion();
-        }
+    function selectOption(selectedIdx) {
+        const qData = currentCategory[currentIndex];
+        const buttons = document.querySelectorAll('.btn-option');
 
-        function loadQuestion() {
-            const q = currentQuestions[currentIndex];
-            document.getElementById('quiz-tracker').innerText = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
-            document.getElementById('quiz-question').innerText = q.q;
-            document.getElementById('next-button').style.display = 'none';
-
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
-
-            q.opts.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(btn, idx, q.ans);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function checkAnswer(btn, chosen, correct) {
-            const allBtns = document.querySelectorAll('.option-btn');
-            allBtns.forEach(b => b.disabled = true);
-
-            if (chosen === correct) {
+        buttons.forEach((btn, idx) => {
+            btn.disabled = true;
+            if (idx === qData.ans) {
                 btn.classList.add('correct');
-                playSound('correct');
-                stars++;
-            } else {
+            } else if (idx === selectedIdx) {
                 btn.classList.add('wrong');
-                allBtns[correct].classList.add('correct');
-                playSound('wrong');
             }
+        });
 
-            document.getElementById('next-button').style.display = 'block';
+        if (selectedIdx === qData.ans) {
+            score++;
         }
 
-        function nextQuestion() {
-            currentIndex++;
-            if (currentIndex < currentQuestions.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
-        }
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
 
-        function showResults() {
-            goToPage('results');
-            const starDisplay = document.getElementById('star-display');
-            const title = document.getElementById('result-title');
-            const desc = document.getElementById('result-desc');
-
-            if (stars === 3) {
-                starDisplay.innerText = "⭐⭐⭐";
-                title.innerText = "🎉 Super Star!";
-                desc.innerText = "You got 3 out of 3 correct!";
-            } else if (stars === 2) {
-                starDisplay.innerText = "⭐⭐";
-                title.innerText = "👏 Great Effort!";
-                desc.innerText = `You scored ${stars} out of 3 stars!`;
-            } else {
-                starDisplay.innerText = "⭐";
-                title.innerText = "🌱 Keep Practicing!";
-                desc.innerText = `You earned ${stars} star! Try again to get all 3!`;
-            }
+    function nextQuestion() {
+        currentIndex++;
+        if (currentIndex < currentCategory.length) {
+            loadQuestion();
+        } else {
+            showResults();
         }
-    </script>
+    }
+
+    function showResults() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        document.getElementById('score-text').innerText = `${score} / ${currentCategory.length}`;
+
+        const feedback = document.getElementById('score-feedback');
+        if (score === currentCategory.length) {
+            feedback.innerText = "🏆 Perfect Score! You are a genius!";
+        } else if (score >= 3) {
+            feedback.innerText = "🌟 Great job! Well done!";
+        } else {
+            feedback.innerText = "💪 Keep practicing! You can do it!";
+        }
+    }
+
+    function goHome() {
+        document.getElementById('result-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+    }
+</script>
 </body>
 </html>
-
