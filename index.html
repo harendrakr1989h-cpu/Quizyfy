@@ -69,7 +69,7 @@
 <div class="container">
     <div id="home-screen">
         <h1>🌟 Welcome to Quizyfy! 🌟</h1>
-        <p class="subtitle">Choose a category to start playing:</p>
+        <p class="subtitle">Pick a category to get 5 random questions:</p>
         <div class="category-grid">
             <button onclick="startQuiz('fun')">🎈 General Kids Fun</button>
             <button onclick="startQuiz('science')">🔬 Science & Animals</button>
@@ -92,43 +92,73 @@
         <p class="subtitle">Your score:</p>
         <div id="score-text" class="score-box">0 / 5</div>
         <p id="score-feedback" class="subtitle" style="font-weight: 600; color: var(--text);"></p>
-        <button onclick="goHome()" style="margin-top: 15px;">Play Again 🔄</button>
+        <button onclick="goHome()" style="margin-top: 15px;">Play Again (New Questions) 🔄</button>
     </div>
 </div>
 
 <script>
-    const quizData = {
+    const questionBank = {
         fun: [
             { q: "How many days are there in a standard year?", options: ["350", "365", "370", "400"], ans: 1 },
             { q: "What color do you get if you mix Blue and Yellow?", options: ["Red", "Orange", "Green", "Purple"], ans: 2 },
             { q: "Which animal is known as the King of the Jungle?", options: ["Tiger", "Elephant", "Lion", "Giraffe"], ans: 2 },
             { q: "How many letters are in the English alphabet?", options: ["24", "26", "28", "30"], ans: 1 },
-            { q: "Which fruit is known to keep the doctor away if eaten daily?", options: ["Banana", "Orange", "Apple", "Mango"], ans: 2 }
+            { q: "Which fruit is known to keep the doctor away if eaten daily?", options: ["Banana", "Orange", "Apple", "Mango"], ans: 2 },
+            { q: "How many colors are there in a rainbow?", options: ["5", "6", "7", "8"], ans: 2 },
+            { q: "What is the name of Mickey Mouse's pet dog?", options: ["Goofy", "Pluto", "Snoopy", "Scooby"], ans: 1 },
+            { q: "Which shape has three sides?", options: ["Square", "Circle", "Triangle", "Rectangle"], ans: 2 },
+            { q: "How many hours are there in one single day?", options: ["12", "24", "36", "48"], ans: 1 },
+            { q: "What frozen substance falls as snowflakes?", options: ["Ice cream", "Water", "Cotton", "Sugar"], ans: 1 }
         ],
         science: [
             { q: "What is the largest land animal in the world?", options: ["Blue Whale", "African Elephant", "Giraffe", "Hippopotamus"], ans: 1 },
             { q: "What gas do plants absorb from the air?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], ans: 1 },
             { q: "How many legs does a spider have?", options: ["6", "8", "10", "12"], ans: 1 },
             { q: "What is the hardest natural substance on Earth?", options: ["Gold", "Iron", "Diamond", "Stone"], ans: 2 },
-            { q: "Which part of the plant is underground and drinks water?", options: ["Leaves", "Roots", "Stem", "Flower"], ans: 1 }
+            { q: "Which part of the plant is underground and drinks water?", options: ["Leaves", "Roots", "Stem", "Flower"], ans: 1 },
+            { q: "Which mammal can fly in the sky?", options: ["Bat", "Flying Squirrel", "Ostrich", "Penguin"], ans: 0 },
+            { q: "What makes plant leaves look green?", options: ["Chlorophyll", "Hemoglobin", "Melanin", "Sunlight"], ans: 0 },
+            { q: "How many bones does an adult human body have?", options: ["106", "206", "306", "406"], ans: 1 },
+            { q: "What is the fastest land animal in the world?", options: ["Cheetah", "Lion", "Horse", "Leopard"], ans: 0 },
+            { q: "Which animal lays the largest eggs in the world?", options: ["Eagle", "Crocodile", "Ostrich", "Penguin"], ans: 2 }
         ],
         space: [
             { q: "Which planet is closest to the Sun?", options: ["Venus", "Mars", "Mercury", "Earth"], ans: 2 },
             { q: "Which planet is famously called the Red Planet?", options: ["Jupiter", "Mars", "Saturn", "Mercury"], ans: 1 },
             { q: "What is the name of Earth's natural satellite?", options: ["Europa", "The Moon", "Titan", "Phobos"], ans: 1 },
             { q: "Which is the largest planet in our solar system?", options: ["Saturn", "Jupiter", "Neptune", "Uranus"], ans: 1 },
-            { q: "What gives light and heat to our entire solar system?", options: ["The Moon", "The Sun", "Polaris", "Mars"], ans: 1 }
+            { q: "What gives light and heat to our entire solar system?", options: ["The Moon", "The Sun", "Polaris", "Mars"], ans: 1 },
+            { q: "Which planet is famous for having large, bright rings?", options: ["Jupiter", "Saturn", "Uranus", "Neptune"], ans: 1 },
+            { q: "Who was the first person to walk on the Moon?", options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "Michael Collins"], ans: 1 },
+            { q: "What is the name of our home galaxy?", options: ["Andromeda", "Milky Way", "Whirlpool", "Sombrero"], ans: 1 },
+            { q: "What is a shooting star really called in science?", options: ["Comet", "Meteor", "Asteroid", "Supernova"], ans: 1 },
+            { q: "How long does light from the Sun take to reach Earth?", options: ["8 seconds", "8 minutes", "8 hours", "Instant"], ans: 1 }
         ]
     };
 
-    let currentCategory = [];
+    let activeQuestions = [];
     let currentIndex = 0;
     let score = 0;
+    const QUESTIONS_PER_ROUND = 5;
+
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
 
     function startQuiz(categoryKey) {
-        currentCategory = quizData[categoryKey];
+        // Randomly shuffle all questions in category and select the first 5
+        const fullBank = questionBank[categoryKey];
+        const shuffled = shuffleArray(fullBank);
+        activeQuestions = shuffled.slice(0, QUESTIONS_PER_ROUND);
+
         currentIndex = 0;
         score = 0;
+
         document.getElementById('home-screen').classList.add('hidden');
         document.getElementById('result-screen').classList.add('hidden');
         document.getElementById('quiz-screen').classList.remove('hidden');
@@ -136,10 +166,10 @@
     }
 
     function loadQuestion() {
-        const qData = currentCategory[currentIndex];
-        document.getElementById('question-count').innerText = `Question ${currentIndex + 1} of ${currentCategory.length}`;
+        const qData = activeQuestions[currentIndex];
+        document.getElementById('question-count').innerText = `Question ${currentIndex + 1} of ${activeQuestions.length}`;
         document.getElementById('question-text').innerText = qData.q;
-        document.getElementById('progress-fill').style.width = `${((currentIndex) / currentCategory.length) * 100}%`;
+        document.getElementById('progress-fill').style.width = `${((currentIndex) / activeQuestions.length) * 100}%`;
         document.getElementById('next-btn').classList.add('hidden');
 
         const container = document.getElementById('options-container');
@@ -155,7 +185,7 @@
     }
 
     function selectOption(selectedIdx) {
-        const qData = currentCategory[currentIndex];
+        const qData = activeQuestions[currentIndex];
         const buttons = document.querySelectorAll('.btn-option');
 
         buttons.forEach((btn, idx) => {
@@ -176,7 +206,7 @@
 
     function nextQuestion() {
         currentIndex++;
-        if (currentIndex < currentCategory.length) {
+        if (currentIndex < activeQuestions.length) {
             loadQuestion();
         } else {
             showResults();
@@ -186,15 +216,15 @@
     function showResults() {
         document.getElementById('quiz-screen').classList.add('hidden');
         document.getElementById('result-screen').classList.remove('hidden');
-        document.getElementById('score-text').innerText = `${score} / ${currentCategory.length}`;
+        document.getElementById('score-text').innerText = `${score} / ${activeQuestions.length}`;
 
         const feedback = document.getElementById('score-feedback');
-        if (score === currentCategory.length) {
-            feedback.innerText = "🏆 Perfect Score! You are a genius!";
+        if (score === activeQuestions.length) {
+            feedback.innerText = "🏆 Perfect Score! You are a quiz master!";
         } else if (score >= 3) {
             feedback.innerText = "🌟 Great job! Well done!";
         } else {
-            feedback.innerText = "💪 Keep practicing! You can do it!";
+            feedback.innerText = "💪 Good try! Play again for new questions!";
         }
     }
 
